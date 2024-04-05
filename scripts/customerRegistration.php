@@ -9,9 +9,6 @@ require_once (APP_ROOT . '/' . APP_FOLDER_NAME . '/scripts/dbConnection.php');
 $jsFile = APP_FOLDER_NAME . '/clientScripts/customerRegistration.js';
 $cssFile = APP_FOLDER_NAME . '/styles/customerRegistration.css';
 
-
-$jsFile = "test";
-
 // application checks
 if (isset($_POST['email'])) {
     $email = cleanIO($_POST['email']);
