@@ -15,3 +15,5 @@ function getDB($dsn, $userName, $passwd) {
     }
 }
 //getDB();
+
+$test = "test"
