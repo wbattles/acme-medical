@@ -1,6 +1,11 @@
 <?php
+require_once 'errorDisplay.php';
+
+$jsFile = '';
+$cssFile = APP_FOLDER_NAME . '/styles/main.css';
+
 function getDB($dsn, $userName, $passwd) {
-    require_once ('../app_config.php');
+    require_once (APP_ROOT . APP_FOLDER_NAME . '/app_config.php');
     require_once (APP_ROOT . APP_FOLDER_NAME . '/scripts/errorDisplay.php');
     try {
         //DEBUG echo $dsn;
@@ -10,7 +15,7 @@ function getDB($dsn, $userName, $passwd) {
         return $db;
     } catch (Exception $e) {
         $error_message = $e->getMessage();
-        echoError($error_message);
+        echoError($error_message, $jsFile, $cssFile);
         exit (1);
     }
 }

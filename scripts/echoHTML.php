@@ -1,31 +1,26 @@
 <?php
 
-function echoHead($jsFile, $cssFile){
+function echoHead($title, $jsFile, $cssFile){
     echo "<head>
-            <title>Customer Registration</title>
+            <title>'" . $title . "'</title>
             <link rel='stylesheet' type='text/css' href='" . $cssFile . "'>
             <script src= '" . $jsFile . "'></script>
         </head>";
 };
 
 function echoHeader($title){
+    $patient_path = APP_FOLDER_NAME . '/scripts/patient/patient-portal.php';
+    $medication_path = APP_FOLDER_NAME . '/scripts/medication/medication-portal.php';
+    $fev_path = APP_FOLDER_NAME . '/scripts/fev/fev-portal.php';
+
     echo "<body>
-    <div class='big-box'>
         <header>
             <h2> $title </h2>
             <nav>
                 <ul class='menu'>
-                    <li><button>Home</button></li>
-                    <li><button class='current'>Account</button>
-                            <ul class='submenu'>
-                                <li>Login</li>
-                                <li><a href='landingPage.php'>Register</a></li>
-                                <li>Manage</li>
-                            </ul>
-                    </li>
-                    <li><button>Email Us</button></li>
-                    <li><button>Logout</button></li>
-                    <li><button></button></li>
+                    <li><a href='" . $patient_path . "'>Patients</a></li>
+                    <li><a href='" . $medication_path . "'>Medication</a></li>
+                    <li><a href='" . $fev_path . "'>FEV</a></li>
                 </ul>
             </nav>
         </header><br>
@@ -37,10 +32,9 @@ function echoFooter(){
     $currDate = date('l jS \of F Y h:i:s A');
 
     echo "<footer>
-                $currDate &copy; Copyright by Wiley Battles
+                $currDate
             </footer>
     
-        </div>
         </main>  
         </body>";
 }

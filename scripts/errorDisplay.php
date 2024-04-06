@@ -1,12 +1,10 @@
 <?php
 
-function echoError($errMsg){
+function echoError($errMsg, $jsFile, $cssFile){
     require_once ('../app_config.php');
     require_once (APP_ROOT . '/' . APP_FOLDER_NAME . '/scripts/echoHTML.php');
-    $jsFile = APP_FOLDER_NAME . '/clientScripts/customerRegistration.js';
-    $cssFile = APP_FOLDER_NAME . '/styles/customerRegistration.css';
 
-    echoHead($jsFile, $cssFile);
+    echoHead("Acme Medical", $jsFile, $cssFile);
     echoHeader("Oops!");
     echo "<h3>$errMsg </h3>";
     echoFooter();
