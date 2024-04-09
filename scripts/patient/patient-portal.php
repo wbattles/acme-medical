@@ -10,22 +10,22 @@ $cssFile = APP_FOLDER_NAME . '/styles/main.css';
 
 $db = getDB(DSN1, USER1, PASSWD1);
 
-$selectStmt = "SELECT PatientInformation.*
-                FROM PatientInformation";
+// $selectStmt = "SELECT PatientInformation.*
+//                 FROM PatientInformation";
 
 // $selectStmt = "SELECT PatientInformation.*,Medication.*
 //                 FROM PatientInformation
 //                 INNER JOIN Medication ON PatientInformation.PatientID = Medication.PatientID";
 
 
-// $selectStmt = "SELECT PatientInformation.*, Medication.*, max_FEV_PatientTests.*
-//                 FROM PatientInformation
-//                 INNER JOIN Medication ON PatientInformation.PatientID = Medication.PatientID
-//                 INNER JOIN (
-//                     SELECT PatientID, MAX(FEV) AS max_FEV
-//                     FROM PatientTests
-//                     GROUP BY PatientID
-//                 ) AS max_FEV_PatientTests ON PatientInformation.PatientID = max_FEV_PatientTests.PatientID;";
+$selectStmt = "SELECT PatientInformation.*, Medication.*, max_FEV_PatientTests.*
+                FROM PatientInformation
+                INNER JOIN Medication ON PatientInformation.PatientID = Medication.PatientID
+                INNER JOIN (
+                    SELECT PatientID, MAX(FEV) AS max_FEV
+                    FROM PatientTests
+                    GROUP BY PatientID
+                ) AS max_FEV_PatientTests ON PatientInformation.PatientID = max_FEV_PatientTests.PatientID;";
 
 try {
     $query = $db->prepare($selectStmt);

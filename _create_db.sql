@@ -54,10 +54,23 @@ VALUES
 
 CREATE TABLE PatientTests (
   TestRecordID INT AUTO_INCREMENT PRIMARY KEY,
+  VisitID INT,
+  FEV TEXT,
+  FOREIGN KEY (VisitID) REFERENCES PatientVisits(VisitID)
+);
+
+CREATE TABLE PatientVisits (
+  VisitID INT AUTO_INCREMENT PRIMARY KEY,
   PatientID INT,
   TestDate DATE,
   FEV TEXT,
   FOREIGN KEY (PatientID) REFERENCES PatientInformation(PatientID)
+);
+
+CREATE TABLE Doctors (
+  DoctorID INT AUTO_INCREMENT PRIMARY KEY,
+  DFirstName VARCHAR(255) NOT NULL,
+  DLastName VARCHAR(255) NOT NULL,
 );
 
 INSERT INTO PatientTests (TestRecordID, PatientID, TestDate, FEV) VALUES
