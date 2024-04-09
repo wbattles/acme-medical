@@ -15,7 +15,7 @@ function getDB($dsn, $userName, $passwd) {
         return $db;
     } catch (Exception $e) {
         $error_message = $e->getMessage();
-        echoError($error_message, $jsFile, $cssFile);
+        echoError($error_message);
         exit (1);
     }
 }

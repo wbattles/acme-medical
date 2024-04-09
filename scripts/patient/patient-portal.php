@@ -33,7 +33,7 @@ try {
     $allData = $query -> fetchAll();
     $query->closeCursor();
 } catch(Exception $e) {
-    echoError($e-> getMessage(), $jsFile, $cssFile);
+    echoError($e-> getMessage());
     exit(1);
 };
 
