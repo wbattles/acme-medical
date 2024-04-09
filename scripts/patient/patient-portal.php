@@ -52,19 +52,20 @@ echo "<table>
             <th>Genetics</th>
             <th>Diabetes</th>
             <th>Other Conditions</th>
-            <th>Vest</th>
-            <th>Acapella</th>
-            <th>Pulmozyme</th>
-            <th>Inhaled Tobi</th>
-            <th>Inhaled Colistin</th>
-            <th>Hypertonic Saline</th>
-            <th>Azithromycin</th>
-            <th>Clarithromycin</th>
-            <th>Inhaled Gentamicin</th>
-            <th>Enzymes</th>
-            <th>Enzymes Type/Dosage</th>
-            <th>FEV</th>
         </tr>";
+
+        // <th>Vest</th>
+        // <th>Acapella</th>
+        // <th>Pulmozyme</th>
+        // <th>Inhaled Tobi</th>
+        // <th>Inhaled Colistin</th>
+        // <th>Hypertonic Saline</th>
+        // <th>Azithromycin</th>
+        // <th>Clarithromycin</th>
+        // <th>Inhaled Gentamicin</th>
+        // <th>Enzymes</th>
+        // <th>Enzymes Type/Dosage</th>
+        // <th>FEV</th>
 
 foreach ($allData as $data) {
     echo "<tr>";

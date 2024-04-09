@@ -1,5 +1,5 @@
 <?php
-function echoError($errMsg, $jsFile, $cssFile){
+function echoError($errMsg){
     // require_once ('../../app_config.php');;
     require_once (APP_ROOT . '/' . APP_FOLDER_NAME . '/scripts/echoHTML.php');
 

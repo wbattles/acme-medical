@@ -57,7 +57,7 @@ try {
 
 } catch (Exception $e) {
     $error_message = $e->getMessage();
-    echoError($error_message,  $jsFile, $cssFile);
+    echoError($error_messagee);
     exit(1);
 }
 
