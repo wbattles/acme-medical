@@ -10,12 +10,27 @@ $cssFile = APP_FOLDER_NAME . '/styles/main.css';
 
 $db = getDB(DSN1, USER1, PASSWD1);
 
-$selectStmt = "SELECT PatientID, FirstName, LastName, Gender, Birthdate, Genetics, Diabetes, OtherConditions FROM PatientInformation";
+$selectStmt = "SELECT PatientInformation.*
+                FROM PatientInformation";
+
+// $selectStmt = "SELECT PatientInformation.*,Medication.*
+//                 FROM PatientInformation
+//                 INNER JOIN Medication ON PatientInformation.PatientID = Medication.PatientID";
+
+
+// $selectStmt = "SELECT PatientInformation.*, Medication.*, max_FEV_PatientTests.*
+//                 FROM PatientInformation
+//                 INNER JOIN Medication ON PatientInformation.PatientID = Medication.PatientID
+//                 INNER JOIN (
+//                     SELECT PatientID, MAX(FEV) AS max_FEV
+//                     FROM PatientTests
+//                     GROUP BY PatientID
+//                 ) AS max_FEV_PatientTests ON PatientInformation.PatientID = max_FEV_PatientTests.PatientID;";
 
 try {
     $query = $db->prepare($selectStmt);
     $query -> execute();
-    $allPatients = $query -> fetchAll();
+    $allData = $query -> fetchAll();
     $query->closeCursor();
 } catch(Exception $e) {
     echoError($e-> getMessage(), $jsFile, $cssFile);
@@ -24,6 +39,8 @@ try {
 
 echoHead("Acme Medical", $jsFile, $cssFile);
 echoHeader("ACME MEDICAL");
+
+echo "<a href='patient-add.php'><button>Patient Add</button></a>";
 
 echo "<table>
         <tr>
@@ -35,21 +52,45 @@ echo "<table>
             <th>Genetics</th>
             <th>Diabetes</th>
             <th>Other Conditions</th>
+            <th>Vest</th>
+            <th>Acapella</th>
+            <th>Pulmozyme</th>
+            <th>Inhaled Tobi</th>
+            <th>Inhaled Colistin</th>
+            <th>Hypertonic Saline</th>
+            <th>Azithromycin</th>
+            <th>Clarithromycin</th>
+            <th>Inhaled Gentamicin</th>
+            <th>Enzymes</th>
+            <th>Enzymes Type/Dosage</th>
+            <th>FEV</th>
         </tr>";
 
-foreach ($allPatients as $nextPatient) {
+foreach ($allData as $data) {
     echo "<tr>";
-    echo "<td>" . $nextPatient["PatientID"] . "</td>";
-    echo "<td>" . $nextPatient["FirstName"] . "</td>";
-    echo "<td>" . $nextPatient["LastName"] . "</td>";
-    echo "<td>" . $nextPatient["Gender"] . "</td>";
-    echo "<td>" . $nextPatient["Birthdate"] . "</td>";
-    echo "<td>" . $nextPatient["Genetics"] . "</td>";
-    echo "<td>" . $nextPatient["Diabetes"] . "</td>";
-    echo "<td>" . $nextPatient["OtherConditions"] . "</td>";
-    // Echo out other columns in the same manner if needed
+    echo "<td>" . $data["PatientID"] . "</td>";
+    echo "<td>" . $data["FirstName"] . "</td>";
+    echo "<td>" . $data["LastName"] . "</td>";
+    echo "<td>" . $data["Gender"] . "</td>";
+    echo "<td>" . $data["Birthdate"] . "</td>";
+    echo "<td>" . $data["Genetics"] . "</td>";
+    echo "<td>" . $data["Diabetes"] . "</td>";
+    echo "<td>" . $data["OtherConditions"] . "</td>";
+    // echo "<td>" . $data["Vest"] . "</td>";
+    // echo "<td>" . $data["Acapella"] . "</td>";
+    // echo "<td>" . $data["Pulmozyme"] . "</td>";
+    // echo "<td>" . $data["InhaledTobi"] . "</td>";
+    // echo "<td>" . $data["InhaledColistin"] . "</td>";
+    // echo "<td>" . $data["HypertonicSaline"] . "</td>";
+    // echo "<td>" . $data["Azithromycin"] . "</td>";
+    // echo "<td>" . $data["Clarithromycin"] . "</td>";
+    // echo "<td>" . $data["InhaledGentamicin"] . "</td>";
+    // echo "<td>" . $data["Enzymes"] . "</td>";
+    // echo "<td>" . $data["EnzymesTypeDosage"] . "</td>";
+    // echo "<td>" . $data["max_FEV"] . "</td>";
     echo "</tr>";
 }
+
 
 echo "</table><br>";
 
