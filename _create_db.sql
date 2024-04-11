@@ -23,68 +23,95 @@ VALUES
 ('Charlie', 'Brown', 'Other', '1975-12-17', 'ApoE4 allele', 'No', 'Hyperlipidemia');
 
 
-CREATE TABLE Medication (
-  PatientID INT,
-  Vest ENUM('Yes', 'No') NOT NULL DEFAULT 'No',
-  Acapella ENUM('Yes', 'No') NOT NULL DEFAULT 'No',
-  Pulmozyme ENUM('Yes', 'No') NOT NULL DEFAULT 'No',
-  PulmozymeQuantity INT DEFAULT NULL,
-  PulmozymeDateReceived DATE DEFAULT NULL,
-  InhaledTobi ENUM('Yes', 'No') NOT NULL DEFAULT 'No',
-  InhaledColistin ENUM('Yes', 'No') NOT NULL DEFAULT 'No',
-  HypertonicSaline ENUM('3%', '7%', 'No') NOT NULL DEFAULT 'No',
-  Azithromycin ENUM('Yes', 'No') NOT NULL DEFAULT 'No',
-  Clarithromycin ENUM('Yes', 'No') NOT NULL DEFAULT 'No',
-  InhaledGentamicin ENUM('Yes', 'No') NOT NULL DEFAULT 'No',
-  Enzymes ENUM('Yes', 'No') NOT NULL DEFAULT 'No',
-  EnzymesTypeDosage TEXT,
-  PRIMARY KEY (PatientID),
-  FOREIGN KEY (PatientID) REFERENCES PatientInformation(PatientID)
-);
-
-INSERT INTO Medication 
-(PatientID, Vest, Acapella, Pulmozyme, PulmozymeQuantity, PulmozymeDateReceived, 
-InhaledTobi, InhaledColistin, HypertonicSaline, Azithromycin, 
-Clarithromycin, InhaledGentamicin, Enzymes, EnzymesTypeDosage) 
-VALUES 
-(1, 'No', 'Yes', 'No', NULL, NULL, 'No', 'No', '7%', 'Yes', 'No', 'No', 'Yes', 'Type1, 250mg'),
-(2, 'Yes', 'No', 'Yes', 1, '2024-04-05', 'Yes', 'No', '3%', 'No', 'Yes', 'Yes', 'No', NULL),
-(3, 'No', 'Yes', 'Yes', 2, '2024-04-06', 'No', 'Yes', 'No', 'Yes', 'No', 'No', 'Yes', 'Type2, 500mg');
-
-
-CREATE TABLE PatientTests (
-  TestRecordID INT AUTO_INCREMENT PRIMARY KEY,
-  VisitID INT,
-  FEV TEXT,
-  FOREIGN KEY (VisitID) REFERENCES PatientVisits(VisitID)
-);
-
-CREATE TABLE PatientVisits (
-  VisitID INT AUTO_INCREMENT PRIMARY KEY,
-  PatientID INT,
-  TestDate DATE,
-  FEV TEXT,
-  FOREIGN KEY (PatientID) REFERENCES PatientInformation(PatientID)
-);
-
 CREATE TABLE Doctors (
   DoctorID INT AUTO_INCREMENT PRIMARY KEY,
   DFirstName VARCHAR(255) NOT NULL,
-  DLastName VARCHAR(255) NOT NULL,
+  DLastName VARCHAR(255) NOT NULL
 );
 
-INSERT INTO PatientTests (TestRecordID, PatientID, TestDate, FEV) VALUES
-(1, 1, '2024-04-06', '89'),
-(2, 1, '2024-04-06', '89'),
-(3, 2, '2024-04-06', '88'),
-(4, 3, '2024-04-06', '90');
+INSERT INTO Doctors
+(DFirstName, DLastName) 
+VALUES
+('John', 'Doe'),
+('Jane', 'Doe'),
+('Jim', 'Beam');
 
 
-DROP USER IF EXISTS 'kermit';
+CREATE TABLE Visits (
+  VisitID INT AUTO_INCREMENT PRIMARY KEY,
+  PatientID INT,
+  DoctorID INT,
+  VisitDate DATE,
+  FOREIGN KEY (PatientID) REFERENCES PatientInformation(PatientID),
+  FOREIGN KEY (DoctorID) REFERENCES Doctors(DoctorID)
+);
+
+INSERT INTO Visits (PatientID, DoctorID, VisitDate) 
+VALUES
+(1, 1, '2023-01-10'),
+(2, 1, '2023-01-15'),
+(3, 2, '2023-02-05');
+
+
+CREATE TABLE Tests (
+  TestRecordID INT AUTO_INCREMENT PRIMARY KEY,
+  VisitID INT,
+  FEV TEXT,
+  FOREIGN KEY (VisitID) REFERENCES Visits(VisitID)
+);
+
+INSERT INTO Tests (VisitID, FEV) 
+VALUES
+(1, '90'),
+(1, '74'),
+(2, '95'),
+(3, '82');
+
+
+CREATE TABLE Medications (
+  MedID INT AUTO_INCREMENT PRIMARY KEY,
+  MedName VARCHAR(255) NOT NULL,
+  MedType VARCHAR(255),
+  Enzyme? VARCHAR(255)
+);
+
+INSERT INTO Medications (MedName, MedType, Enzyme?) 
+VALUES
+('Vest', NULL, 'N'),
+('Acapella', NULL, 'N'),
+('Pulmozyme', NULL, 'N'),
+('Tobi', 'Inhaled', 'N'),
+('Tobi', 'Oral', 'N'),
+('Inhaled Colistin, 'N''),
+('Hypertonic Saline', '3%', 'N'),
+('Hypertonic Saline', '7%', 'N'),
+('Azithromycin', NULL, 'N'),
+('Clarithromycin', NULL, 'N'),
+('Inhaled Gentamicin', NULL, 'N'),
+('Creon', NULL, 'Y');
+
+
+
+CREATE TABLE Perscriptions (
+  PerscriptionID INT AUTO_INCREMENT PRIMARY KEY,
+  MedID INT,
+  VisitID INT,
+  Dosage VARCHAR(255),
+  Quantity VARCHAR(255),
+  FOREIGN KEY (MedID) REFERENCES Medications(MedID)
+  FOREIGN KEY (VisitID) REFERENCES Visits(VisitID)
+);
+
+INSERT INTO Perscriptions (MedID, VisitID, Dosage, Quantity),
+VALUES
+(1, 1, '100 mg', NULL),
+(1, 1, '100 mg', NULL),
+(2, 2, '7%', NULL),
+(3, 3, '1000', 'Creon');
+
+
+
+
+DROP USER IF EXISTS 'kermit'@'localhost';
 CREATE USER 'kermit'@'localhost' IDENTIFIED BY 'sesame';
-
-GRANT SELECT, INSERT, DELETE, UPDATE 
-ON AcmeMedicalDatabase.* TO 'kermit'@'localhost';
-TO kermit@localhost
-IDENTIFIED BY 'sesame';
-
+GRANT SELECT, INSERT, DELETE, UPDATE ON AcmeMedicalDatabase.* TO 'kermit'@'localhost';
