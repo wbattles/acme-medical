@@ -1,48 +1,30 @@
 <?php
-require_once ('../../app_config.php');
-require_once (APP_ROOT . '/' . APP_FOLDER_NAME . '/scripts/echoHTML.php');
-require_once (APP_ROOT . '/' . APP_FOLDER_NAME . '/scripts/errorDisplay.php');
-require_once (APP_ROOT . '/' . APP_FOLDER_NAME . '/scripts/tools.php');
-require_once (APP_ROOT . '/' . APP_FOLDER_NAME . '/scripts/dbConnection.php');
+@include_once ('../../app_config.php');
+@include_once (APP_ROOT.APP_FOLDER_NAME . '/scripts/functions.php');
+// Connect to MySQL database
+$pdo = pdo_connect_mysql();
+// Get the page via GET request (URL param: page), if non exists default the page to 1
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+// Number of records to show on each page
+$records_per_page = 5;
+// Prepare the SQL statement and get records from our PatientInformation table, LIMIT will determine the page
+$stmt = $pdo->prepare('SELECT * FROM PatientInformation ORDER BY PatientID LIMIT :current_page, :record_per_page');
+$stmt->bindValue(':current_page', ($page-1)*$records_per_page, PDO::PARAM_INT);
+$stmt->bindValue(':record_per_page', $records_per_page, PDO::PARAM_INT);
+$stmt->execute();
+// Fetch the records so we can display them in our template.
+$patients = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Get the total number of contacts, this is so we can determine whether there should be a next and previous button
+$num_patients = $pdo->query('SELECT COUNT(*) FROM PatientInformation')->fetchColumn();
 
-$jsFile = APP_FOLDER_NAME . '/clientScripts/patient_client_checks.js';
-$cssFile = APP_FOLDER_NAME . '/styles/main.css';
+template_header('Read');
 
-$db = getDB(DSN1, USER1, PASSWD1);
-
-// $selectStmt = "SELECT PatientInformation.*
-//                 FROM PatientInformation";
-
-// $selectStmt = "SELECT PatientInformation.*,Medication.*
-//                 FROM PatientInformation
-//                 INNER JOIN Medication ON PatientInformation.PatientID = Medication.PatientID";
-
-
-$selectStmt = "SELECT PatientInformation.*, Medication.*, max_FEV_PatientTests.*
-                FROM PatientInformation
-                INNER JOIN Medication ON PatientInformation.PatientID = Medication.PatientID
-                INNER JOIN (
-                    SELECT PatientID, MAX(FEV) AS max_FEV
-                    FROM PatientTests
-                    GROUP BY PatientID
-                ) AS max_FEV_PatientTests ON PatientInformation.PatientID = max_FEV_PatientTests.PatientID;";
-
-try {
-    $query = $db->prepare($selectStmt);
-    $query -> execute();
-    $allData = $query -> fetchAll();
-    $query->closeCursor();
-} catch(Exception $e) {
-    echoError($e-> getMessage());
-    exit(1);
-};
-
-echoHead("Acme Medical", $jsFile, $cssFile);
-echoHeader("ACME MEDICAL");
-
-echo "<a href='patient-add.php'><button>Patient Add</button></a>";
-
-echo "<table>
+echo "
+<div class='content read'>
+	<h2>Patient Info</h2>
+	<a href='patient-add.php' class='create-entry'>Add Patient</a>
+    <table>
+    <thead>
         <tr>
             <th>Patient ID</th>
             <th>First Name</th>
@@ -52,47 +34,35 @@ echo "<table>
             <th>Genetics</th>
             <th>Diabetes</th>
             <th>Other Conditions</th>
-        </tr>";
-
-        // <th>Vest</th>
-        // <th>Acapella</th>
-        // <th>Pulmozyme</th>
-        // <th>Inhaled Tobi</th>
-        // <th>Inhaled Colistin</th>
-        // <th>Hypertonic Saline</th>
-        // <th>Azithromycin</th>
-        // <th>Clarithromycin</th>
-        // <th>Inhaled Gentamicin</th>
-        // <th>Enzymes</th>
-        // <th>Enzymes Type/Dosage</th>
-        // <th>FEV</th>
-
-foreach ($allData as $data) {
+        </tr>
+        <thead>
+        <tbody>";
+    
+foreach ($patients as $patient) {
     echo "<tr>";
-    echo "<td>" . $data["PatientID"] . "</td>";
-    echo "<td>" . $data["FirstName"] . "</td>";
-    echo "<td>" . $data["LastName"] . "</td>";
-    echo "<td>" . $data["Gender"] . "</td>";
-    echo "<td>" . $data["Birthdate"] . "</td>";
-    echo "<td>" . $data["Genetics"] . "</td>";
-    echo "<td>" . $data["Diabetes"] . "</td>";
-    echo "<td>" . $data["OtherConditions"] . "</td>";
-    // echo "<td>" . $data["Vest"] . "</td>";
-    // echo "<td>" . $data["Acapella"] . "</td>";
-    // echo "<td>" . $data["Pulmozyme"] . "</td>";
-    // echo "<td>" . $data["InhaledTobi"] . "</td>";
-    // echo "<td>" . $data["InhaledColistin"] . "</td>";
-    // echo "<td>" . $data["HypertonicSaline"] . "</td>";
-    // echo "<td>" . $data["Azithromycin"] . "</td>";
-    // echo "<td>" . $data["Clarithromycin"] . "</td>";
-    // echo "<td>" . $data["InhaledGentamicin"] . "</td>";
-    // echo "<td>" . $data["Enzymes"] . "</td>";
-    // echo "<td>" . $data["EnzymesTypeDosage"] . "</td>";
-    // echo "<td>" . $data["max_FEV"] . "</td>";
-    echo "</tr>";
-}
+    echo "<td>" . $patient["PatientID"] . "</td>";
+    echo "<td>" . $patient["FirstName"] . "</td>";
+    echo "<td>" . $patient["LastName"] . "</td>";
+    echo "<td>" . $patient["Gender"] . "</td>";
+    echo "<td>" . $patient["Birthdate"] . "</td>";
+    echo "<td>" . $patient["Genetics"] . "</td>";
+    echo "<td>" . $patient["Diabetes"] . "</td>";
+    echo "<td>" . $patient["OtherConditions"] . "</td>";
+};
 
 
-echo "</table><br>";
+echo "</tbody>
+    </table>
+<div class='pagination'>";
+if ($page > 1):
+    echo "<a href='patient-portal.php?page=<?=$page-1?>'><i class='fas fa-angle-double-left fa-sm'></i></a>";
+endif;
+if ($page*$records_per_page < $num_patients):
+    echo "<a href='patient-portal.php?page=<?=$page+1?>'><i class='fas fa-angle-double-right fa-sm'></i></a>";
+endif;
 
-echoFooter();
+echo "
+</div>
+</div>";
+
+template_footer();

@@ -1,15 +1,13 @@
 <?php
-require_once ('../app_config.php');
-require_once (APP_ROOT . '/' . APP_FOLDER_NAME . '/scripts/echoHTML.php');
+@include_once('../app_config.php');
+@include_once(APP_ROOT.APP_FOLDER_NAME . '/scripts/functions.php');
+// include 'functions.php';
+// Your PHP code here.
 
-$jsFile = APP_FOLDER_NAME . '/clientScripts/dash_client_checks.js';
-$cssFile = APP_FOLDER_NAME . '/styles/main.css';
+// Home Page template below.
 
-echoHead("Acme Medical", $jsFile, $cssFile);
-echoHeader("ACME MEDICAL");
+template_header('Home');
 
-// login page
-echo "
-";
+echo "";
 
-echoFooter();
+template_footer();
