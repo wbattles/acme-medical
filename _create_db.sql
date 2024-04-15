@@ -82,7 +82,7 @@ VALUES
 ('Pulmozyme', NULL, 'N'),
 ('Tobi', 'Inhaled', 'N'),
 ('Tobi', 'Oral', 'N'),
-('Inhaled Colistin, 'N''),
+('Inhaled Colistin', NULL, 'N'),
 ('Hypertonic Saline', '3%', 'N'),
 ('Hypertonic Saline', '7%', 'N'),
 ('Azithromycin', NULL, 'N'),
@@ -92,17 +92,17 @@ VALUES
 
 
 
-CREATE TABLE Perscriptions (
-  PerscriptionID INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Prescriptions (
+  PrescriptionID INT AUTO_INCREMENT PRIMARY KEY,
   MedID INT,
   VisitID INT,
   Dosage VARCHAR(255),
   Quantity VARCHAR(255),
-  FOREIGN KEY (MedID) REFERENCES Medications(MedID)
+  FOREIGN KEY (MedID) REFERENCES Medications(MedID),
   FOREIGN KEY (VisitID) REFERENCES Visits(VisitID)
 );
 
-INSERT INTO Perscriptions (MedID, VisitID, Dosage, Quantity),
+INSERT INTO Prescriptions (MedID, VisitID, Dosage, Quantity)
 VALUES
 (1, 1, '100 mg', NULL),
 (1, 1, '100 mg', NULL),
