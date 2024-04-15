@@ -72,10 +72,10 @@ CREATE TABLE Medications (
   MedID INT AUTO_INCREMENT PRIMARY KEY,
   MedName VARCHAR(255) NOT NULL,
   MedType VARCHAR(255),
-  Enzyme? VARCHAR(255)
+  Enzyme VARCHAR(255)
 );
 
-INSERT INTO Medications (MedName, MedType, Enzyme?) 
+INSERT INTO Medications (MedName, MedType, Enzyme) 
 VALUES
 ('Vest', NULL, 'N'),
 ('Acapella', NULL, 'N'),
