@@ -11,13 +11,13 @@ if (!empty($_POST)) {
     // Check if POST variable "name" exists, if not default //the value to blank, basically the same for all //variables
     $MedName = isset($_POST['MedName']) ? $_POST['MedName'] : '';
     $MedType = isset($_POST['MedType']) ? $_POST['MedType'] : '';
-    $Enzyme? = isset($_POST['Enzyme?']) ? $_POST['Enzyme?'] : '';
+    $Enzyme = isset($_POST['Enzyme?']) ? $_POST['Enzyme?'] : '';
 
     $stmt = $pdo->prepare('INSERT INTO Medications VALUES (?, ?, ?, ?)');
     $stmt->execute([$MedID, $MedName, $MedType, $Enzyme]);
 
     $msg = 'Created Successfully!';
-}
+};
 
 
 template_header('Create');

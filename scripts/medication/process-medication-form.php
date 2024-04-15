@@ -17,7 +17,7 @@ if (isset($_POST['MedType'])) {
 };
 
 if (isset($_POST['Enzyme?'])) {
-    $Enzyme? = cleanIO($_POST['Enzyme?']);
+    $Enzyme = cleanIO($_POST['Enzyme?']);
 };
 
 $db = getDB(DSN1, USER1, PASSWD1);
@@ -28,7 +28,7 @@ try {
     $statement = $db->prepare($insertStmt);
     $statement->bindValue(':MedNameB', $MedName);
     $statement->bindValue(':MedTypeB', $MedType);
-    $statement->bindValue(':Enzyme?', $Enzyme?);
+    $statement->bindValue(':Enzyme?', $Enzyme);
     $statement->execute();
     $statement->closeCursor();
 
