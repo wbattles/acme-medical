@@ -1,63 +1,60 @@
 <?php
-require_once ('../../app_config.php');
-require_once (APP_ROOT . '/' . APP_FOLDER_NAME . '/scripts/echoHTML.php');
-require_once (APP_ROOT . '/' . APP_FOLDER_NAME . '/scripts/errorDisplay.php');
-require_once (APP_ROOT . '/' . APP_FOLDER_NAME . '/scripts/tools.php');
-require_once (APP_ROOT . '/' . APP_FOLDER_NAME . '/scripts/dbConnection.php');
+@include_once ('../../app_config.php');
+@include_once (APP_ROOT.APP_FOLDER_NAME . '/scripts/functions.php');
 
-$jsFile = APP_FOLDER_NAME . '/clientScripts/medication_client_checks.js';
-$cssFile = APP_FOLDER_NAME . '/styles/main.css';
+$pdo = pdo_connect_mysql();
 
-$db = getDB(DSN1, USER1, PASSWD1);
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 
-$selectStmt = "SELECT PatientID, Vest, Acapella, Pulmozyme, InhaledTobi, InhaledColistin, HypertonicSaline, Azithromycin, Clarithromycin, InhaledGentamicin, Enzymes, EnzymesTypeDosage FROM Medication";
+$records_per_page = 5;
 
-try {
-    $query = $db->prepare($selectStmt);
-    $query -> execute();
-    $allMedications = $query -> fetchAll();
-    $query->closeCursor();
-} catch(Exception $e) {
-    echoError($e->getMessage());
-    exit(1);
-};
+$stmt = $pdo->prepare('SELECT * FROM Medications ORDER BY MedID LIMIT :current_page, :record_per_page');
+$stmt->bindValue(':current_page', ($page-1)*$records_per_page, PDO::PARAM_INT);
+$stmt->bindValue(':record_per_page', $records_per_page, PDO::PARAM_INT);
+$stmt->execute();
 
-echoHead("Acme Medical Medications", $jsFile, $cssFile);
-echoHeader("ACME MEDICAL MEDICATIONS");
+$medications = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-echo "<table>
+$num_medications = $pdo->query('SELECT COUNT(*) FROM Medications')->fetchColumn();
+
+template_header('Read');
+
+echo "
+<div class='content read'>
+	<h2>Medication Info</h2>
+	<a href='medication-add.php' class='create-entry'>Add Medication</a>
+    <table>
+    <thead>
         <tr>
-            <th>Patient ID</th>
-            <th>Vest</th>
-            <th>Acapella</th>
-            <th>Pulmozyme</th>
-            <th>Inhaled Tobi</th>
-            <th>Inhaled Colistin</th>
-            <th>Hypertonic Saline</th>
-            <th>Azithromycin</th>
-            <th>Clarithromycin</th>
-            <th>Inhaled Gentamicin</th>
-            <th>Enzymes</th>
-            <th>Enzymes Type/Dosage</th>
-        </tr>";
-
-foreach ($allMedications as $medication) {
+            <th>Med ID</th>
+            <th>Med Name</th>
+            <th>Med Type</th>
+            <th>Enzyme?</th>
+        </tr>
+        <thead>
+        <tbody>";
+    
+foreach ($medications as $medication) {
     echo "<tr>";
-    echo "<td>" . $medication["PatientID"] . "</td>";
-    echo "<td>" . $medication["Vest"] . "</td>";
-    echo "<td>" . $medication["Acapella"] . "</td>";
-    echo "<td>" . $medication["Pulmozyme"] . "</td>";
-    echo "<td>" . $medication["InhaledTobi"] . "</td>";
-    echo "<td>" . $medication["InhaledColistin"] . "</td>";
-    echo "<td>" . $medication["HypertonicSaline"] . "</td>";
-    echo "<td>" . $medication["Azithromycin"] . "</td>";
-    echo "<td>" . $medication["Clarithromycin"] . "</td>";
-    echo "<td>" . $medication["InhaledGentamicin"] . "</td>";
-    echo "<td>" . $medication["Enzymes"] . "</td>";
-    echo "<td>" . $medication["EnzymesTypeDosage"] . "</td>";
-    echo "</tr>";
+    echo "<td>" . $medication["MedID"] . "</td>";
+    echo "<td>" . $medication["MedName"] . "</td>";
+    echo "<td>" . $medication["MedType"] . "</td>";
+    echo "<td>" . $medication["Enzyme?"] . "</td>";
 };
-        
-echo "</table><br>";
 
-echoFooter();
+
+echo "</tbody>
+    </table>
+<div class='pagination'>";
+if ($page > 1):
+    echo "<a href='medication-portal.php?page=<?=$page-1?>'><i class='fas fa-angle-double-left fa-sm'></i></a>";
+endif;
+if ($page*$records_per_page < $num_medications):
+    echo "<a href='medication-portal.php?page=<?=$page+1?>'><i class='fas fa-angle-double-right fa-sm'></i></a>";
+endif;
+
+echo "
+</div>
+</div>";
+
+template_footer();
