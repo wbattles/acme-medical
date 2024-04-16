@@ -16,53 +16,53 @@ $stmt->execute();
 $patients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // Get the total number of contacts, this is so we can determine whether there should be a next and previous button
 $num_patients = $pdo->query('SELECT COUNT(*) FROM PatientInformation')->fetchColumn();
+?>
 
-template_header('Read');
+<?= template_header('Patient Read') ?>
 
-echo "
-<div class='content read'>
-	<h2>Patient Info</h2>
-	<a href='patient-add.php' class='create-entry'>Add Patient</a>
+<div class="content read">
+    <h2>Patient Info</h2>
+    <a href="patient-add.php" class="create-entry">Add Patient</a>
     <table>
-    <thead>
-        <tr>
-            <th>Patient ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Gender</th>
-            <th>Birthdate</th>
-            <th>Genetics</th>
-            <th>Diabetes</th>
-            <th>Other Conditions</th>
-        </tr>
         <thead>
-        <tbody>";
-    
-foreach ($patients as $patient) {
-    echo "<tr>";
-    echo "<td>" . $patient["PatientID"] . "</td>";
-    echo "<td>" . $patient["FirstName"] . "</td>";
-    echo "<td>" . $patient["LastName"] . "</td>";
-    echo "<td>" . $patient["Gender"] . "</td>";
-    echo "<td>" . $patient["Birthdate"] . "</td>";
-    echo "<td>" . $patient["Genetics"] . "</td>";
-    echo "<td>" . $patient["Diabetes"] . "</td>";
-    echo "<td>" . $patient["OtherConditions"] . "</td>";
-};
-
-
-echo "</tbody>
+            <tr>
+                <th>Patient ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Gender</th>
+                <th>Birthdate</th>
+                <th>Genetics</th>
+                <th>Diabetes</th>
+                <th>Other Conditions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($patients as $patient): ?>
+                <tr>
+                    <td><?= $patient['PatientID'] ?></td>
+                    <td><?= $patient['FirstName'] ?></td>
+                    <td><?= $patient['LastName'] ?></td>
+                    <td><?= $patient['Gender'] ?></td>
+                    <td><?= $patient['Birthdate'] ?></td>
+                    <td><?= $patient['Genetics'] ?></td>
+                    <td><?= $patient['Diabetes'] ?></td>
+                    <td><?= $patient['OtherConditions'] ?></td>
+                    <td class="actions">
+                        <a href="patient-update.php?PatientID=<?= $patient['PatientID'] ?>" class="edit"><i class="fas fa-pen fa-xs"></i></a>
+                        <a href="patient-delete.php?PatientID=<?= $patient['PatientID'] ?>" class="trash"><i class="fas fa-trash fa-xs"></i></a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
     </table>
-<div class='pagination'>";
-if ($page > 1):
-    echo "<a href='patient-portal.php?page=<?=$page-1?>'><i class='fas fa-angle-double-left fa-sm'></i></a>";
-endif;
-if ($page*$records_per_page < $num_patients):
-    echo "<a href='patient-portal.php?page=<?=$page+1?>'><i class='fas fa-angle-double-right fa-sm'></i></a>";
-endif;
-
-echo "
+    <div class="pagination">
+        <?php if ($page > 1): ?>
+            <a href="patient-portal.php?page=<?= $page - 1 ?>"><i class="fas fa-angle-double-left fa-sm"></i></a>
+        <?php endif; ?>
+        <?php if ($page * $records_per_page < $num_patients): ?>
+            <a href="patient-portal.php?page=<?= $page + 1 ?>"><i class="fas fa-angle-double-right fa-sm"></i></a>
+        <?php endif; ?>
+    </div>
 </div>
-</div>";
 
-template_footer();
+<?= template_footer() ?>
