@@ -23,7 +23,7 @@ function template_header($title) {
     <html>
 	   <head>
 		<meta charset="utf-8">
-		<title>CRUD</title>
+		<title>ACME Medical</title>
 		<link href="'.WEB_ROOT.APP_FOLDER_NAME.'/styles/style.css" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 	   </head>
