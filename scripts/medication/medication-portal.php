@@ -17,7 +17,8 @@ $medications = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $num_medications = $pdo->query('SELECT COUNT(*) FROM Medications')->fetchColumn();
 ?>
-<?=template_header('Read')?>
+
+<?=template_header('Medication Read')?>
 
 <div class="content read">
 	<h2>Medication Info</h2>
@@ -25,10 +26,10 @@ $num_medications = $pdo->query('SELECT COUNT(*) FROM Medications')->fetchColumn(
     <table>
         <thead>
             <tr>
-                <td>Med ID</td>
-                <td>Med Name</td>
-                <td>Med Type</td>
-                <td>Enzyme?</td>
+                <th>Med ID</th>
+                <th>Med Name</th>
+                <th>Med Type</th>
+                <th>Enzyme?</th>
             </tr>
         </thead>
         <tbody>
@@ -39,8 +40,8 @@ $num_medications = $pdo->query('SELECT COUNT(*) FROM Medications')->fetchColumn(
                 <td><?=$medication['MedType']?></td>
                 <td><?=$medication['Enzyme']?></td>
                 <td class="actions">
-                    <a href="medication-update.php?MedId=" . $medication['MedId'] . "' class='edit'><i class='fas fa-pen fa-xs'></i></a>
-                    <a href="medication-delete.php?MedId=" . $medication['MedId'] . "' class='trash'><i class='fas fa-trash fa-xs'></i></a>
+                    <a href="medication-update.php?MedID=<?= $medication['MedID'] ?>" class="edit"><i class="fas fa-pen fa-xs"></i></a>
+                    <a href="medication-delete.php?MedID=<?= $medication['MedID'] ?>" class="trash"><i class="fas fa-trash fa-xs"></i></a>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -50,7 +51,7 @@ $num_medications = $pdo->query('SELECT COUNT(*) FROM Medications')->fetchColumn(
 		<?php if ($page > 1): ?>
 		<a href="medication-portal.php?page=<?=$page-1?>"><i class="fas fa-angle-double-left fa-sm"></i></a>
 		<?php endif; ?>
-		<?php if ($page*$records_per_page < $num_customers): ?>
+		<?php if ($page*$records_per_page < $num_medications): ?>
 		<a href="medication-portal.php?page=<?=$page+1?>"><i class="fas fa-angle-double-right fa-sm"></i></a>
 		<?php endif; ?>
 	</div>

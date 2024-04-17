@@ -35,7 +35,7 @@ echo '<div class="content update">
     <input type="submit" value="Create">
 </form>';
 if (!empty($msg)):
-    echo '<p>' . $msg .'/p>';
+    echo $msg;
 endif;
 echo '</div>';
 

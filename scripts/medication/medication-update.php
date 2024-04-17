@@ -4,21 +4,21 @@
 $pdo = pdo_connect_mysql();
 $msg = '';
 
-if (isset($_GET['MedId'])) {
+if (isset($_GET['MedID'])) {
     if (!empty($_POST)) {
 
-        $MedId = isset($_POST['MedId']) ? $_POST['MedId'] : NULL;
+        $MedID = isset($_POST['MedID']) ? $_POST['MedID'] : NULL;
         $MedName = isset($_POST['MedName']) ? $_POST['MedName'] : '';
         $MedType = isset($_POST['MedType']) ? $_POST['MedType'] : '';
         $Enzyme = isset($_POST['Enzyme']) ? $_POST['Enzyme'] : '';
        
-        $stmt = $pdo->prepare('UPDATE Medications SET MedId = ?, MedName = ?, MedType = ?, Enzyme = ? WHERE MedId = ?');
-        $stmt->execute([$MedId, $MedName, $MedType, $Enzyme, $_GET['MedId']]);
+        $stmt = $pdo->prepare('UPDATE Medications SET MedID = ?, MedName = ?, MedType = ?, Enzyme = ? WHERE MedID = ?');
+        $stmt->execute([$MedID, $MedName, $MedType, $Enzyme, $_GET['MedID']]);
         $msg = 'Updated Successfully!';
     }
 
-    $stmt = $pdo->prepare('SELECT * FROM Medications WHERE MedId = ?');
-    $stmt->execute([$_GET['MedId']]);
+    $stmt = $pdo->prepare('SELECT * FROM Medications WHERE MedID = ?');
+    $stmt->execute([$_GET['MedID']]);
     $medication = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$medication) {
         exit('Medication doesn\'t exist with that ID!');
@@ -30,10 +30,10 @@ if (isset($_GET['MedId'])) {
 <?=template_header('Read')?>
 
 <div class="content update">
-	<h2>Update Medication #<?=$medication['MedId']?></h2>
-    <form action="medication-update.php?MedId=<?=$medication['MedId']?>" method="post">
-        <label for="MedId">ID</label>
-        <input type="text" name="MedId" placeholder="auto" value="<?=$medication['MedId']?>" id="MedId">
+	<h2>Update Medication #<?=$medication['MedID']?></h2>
+    <form action="medication-update.php?MedID=<?=$medication['MedID']?>" method="post">
+        <label for="MedID">ID</label>
+        <input type="text" name="MedID" placeholder="auto" value="<?=$medication['MedID']?>" id="MedID">
         
         <label for="MedName">Med Name</label>
         <input type="text" name="MedName" value="<?=$medication['MedName']?>" id="MedName">

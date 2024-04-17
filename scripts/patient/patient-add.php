@@ -18,7 +18,6 @@ if (!empty($_POST)) {
     $Diabetes = isset($_POST['Diabetes']) ? $_POST['Diabetes'] : '';
     $OtherConditions = isset($_POST['OtherConditions']) ? $_POST['OtherConditions'] : '';
 
-    // Insert new record into the contacts table
     $stmt = $pdo->prepare('INSERT INTO PatientInformation VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
     $stmt->execute([$PatientID, $FirstName, $LastName, $Gender, $Birthdate, $Genetics, $Diabetes, $OtherConditions]);
     // Output message
@@ -48,7 +47,7 @@ if (!empty($_POST)) {
         <label for="OtherConditions">Other Conditions</label>
         <input type="text" name="OtherConditions" placeholder="Other Conditions" id="OtherConditions">
         <input type="submit" value="Create">
-    </form>';
+    </form>
     <?php if ($msg): ?>
     <p><?= $msg ?></p>
     <?php endif; ?>
