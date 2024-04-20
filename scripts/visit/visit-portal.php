@@ -21,7 +21,7 @@ $num_visits = $pdo->query('SELECT COUNT(*) FROM Visits')->fetchColumn();
 
 <div class="content read">
 	<h2>Read Visits</h2>
-	<a href="visit-create.php" class="create-entry">Create Visit</a>
+	<a href="visit-add.php" class="create-entry">Create Visit</a>
 	<table>
         <thead>
             <tr>
