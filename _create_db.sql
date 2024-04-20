@@ -36,14 +36,14 @@ VALUES
 ('Jane', 'Doe'),
 ('Jim', 'Beam');
 
-
+DROP TABLE Visits
 CREATE TABLE Visits (
   VisitID INT AUTO_INCREMENT PRIMARY KEY,
   PatientID INT,
   DoctorID INT,
   VisitDate DATE,
-  FOREIGN KEY (PatientID) REFERENCES PatientInformation(PatientID),
-  FOREIGN KEY (DoctorID) REFERENCES Doctors(DoctorID)
+  FOREIGN KEY (PatientID) REFERENCES PatientInformation(PatientID) ON DELETE CASCADE,
+  FOREIGN KEY (DoctorID) REFERENCES Doctors(DoctorID) ON DELETE CASCADE
 );
 
 INSERT INTO Visits (PatientID, DoctorID, VisitDate) 
@@ -57,7 +57,7 @@ CREATE TABLE Tests (
   TestRecordID INT AUTO_INCREMENT PRIMARY KEY,
   VisitID INT,
   FEV TEXT,
-  FOREIGN KEY (VisitID) REFERENCES Visits(VisitID)
+  FOREIGN KEY (VisitID) REFERENCES Visits(VisitID) ON DELETE CASCADE
 );
 
 INSERT INTO Tests (VisitID, FEV) 
@@ -83,8 +83,7 @@ VALUES
 ('Tobi', 'Inhaled', 'N'),
 ('Tobi', 'Oral', 'N'),
 ('Inhaled Colistin', NULL, 'N'),
-('Hypertonic Saline', '3%', 'N'),
-('Hypertonic Saline', '7%', 'N'),
+('Hypertonic Saline', NULL, 'N'),
 ('Azithromycin', NULL, 'N'),
 ('Clarithromycin', NULL, 'N'),
 ('Inhaled Gentamicin', NULL, 'N'),
@@ -97,17 +96,17 @@ CREATE TABLE Prescriptions (
   MedID INT,
   VisitID INT,
   Dosage VARCHAR(255),
-  Quantity VARCHAR(255),
+  DateRecieved DATE,
   FOREIGN KEY (MedID) REFERENCES Medications(MedID),
   FOREIGN KEY (VisitID) REFERENCES Visits(VisitID)
 );
 
-INSERT INTO Prescriptions (MedID, VisitID, Dosage, Quantity)
+INSERT INTO Prescriptions (MedID, VisitID, Dosage, DateRecieved)
 VALUES
 (1, 1, '100 mg', NULL),
 (1, 1, '100 mg', NULL),
-(2, 2, '7%', NULL),
-(3, 3, '1000', 'Creon');
+(8, 2, '1000 ml' , NULL),
+(12, 3, '350 mg', NULL);
 
 
 
