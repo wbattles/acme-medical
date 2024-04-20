@@ -35,11 +35,39 @@ if (isset($_GET['VisitID'])) {
         <label for="VisitID">Visit ID</label>
         <input type="text" name="VisitID" placeholder="Visit ID" value="<?= $visit['VisitID'] ?>" id="VisitID">
 
-        <label for="PatientID">Patient ID</label>
-        <input type="text" name="PatientID" placeholder="Patient ID" value="<?= $visit['PatientID'] ?>" id="PatientID">
+        <label for="PatientID">Patient</label>
+        <?php
+        $stmt = $pdo->query("SELECT PatientID, FirstName, LastName FROM PatientInformation");
+        $patients = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        ?>
 
-        <label for="DoctorID">Doctor ID</label>
-        <input type="text" name="DoctorID" placeholder="Doctor ID" value="<?= $visit['DoctorID'] ?>" id="DoctorID">
+        <select name="PatientID" id="PatientID">
+            <!-- Assuming $visit['PatientID'] holds the current patient's ID for the visit context -->
+            <option value="<?=$visit['PatientID']?>" selected><?=$visit['PatientID']?></option>
+            <?php foreach($patients as $patient) : ?>
+                <option value="<?php echo $patient['PatientID']; ?>">
+                    <?php echo $patient['PatientID'] . ' - ' . $patient['FirstName'] . ' ' . $patient['LastName'] ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+
+
+
+
+
+        <label for="DoctorID">Doctor</label>
+        <?php
+        $stmt = $pdo->query("SELECT DoctorID, DFirstName, DLastName FROM Doctors");
+        $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        ?>
+
+        <select name="DoctorID" id="DoctorID">
+            <option value="<?=$visit['DoctorID']?>" selected><?=$visit['DoctorID']?></option>
+            <?php foreach($doctors as $doctor) : ?>
+                <option value="<?php echo $doctor['DoctorID']; ?>"><?php echo $doctor['DoctorID'] . ' - ' . $doctor['DFirstName'] . ' ' . $doctor['DLastName']?></option>
+            <?php endforeach; ?>
+        </select>
+
 
         <label for="VisitDate">Visit Date</label>
         <input type="date" name="VisitDate"

@@ -39,7 +39,7 @@ if (isset($_GET['PatientID'])) {
     <form action="patient-update.php?PatientID=<?= $patient['PatientID'] ?>" method="post">
         <label for="PatientID">Patient ID</label>
         <label for="FirstName">First Name</label>
-        <input type="text" name="PatientID" placeholder="1" value="<?= $patient['PatientID'] ?>" id="PatientID">
+        <input type="text" name="PatientID" placeholder="1" value="<?= $patient['PatientID'] ?>" id="PatientID" readonly>
         <input type="text" name="FirstName" placeholder="John" value="<?= $patient['FirstName'] ?>" id="FirstName">
 
         <label for="LastName">Last Name</label>

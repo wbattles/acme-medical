@@ -36,7 +36,7 @@ VALUES
 ('Jane', 'Doe'),
 ('Jim', 'Beam');
 
-DROP TABLE Visits
+
 CREATE TABLE Visits (
   VisitID INT AUTO_INCREMENT PRIMARY KEY,
   PatientID INT,
@@ -96,17 +96,18 @@ CREATE TABLE Prescriptions (
   MedID INT,
   VisitID INT,
   Dosage VARCHAR(255),
-  DateRecieved DATE,
-  FOREIGN KEY (MedID) REFERENCES Medications(MedID),
-  FOREIGN KEY (VisitID) REFERENCES Visits(VisitID)
+  Quantity VARCHAR(255),
+  DateReceived DATE,
+  FOREIGN KEY (MedID) REFERENCES Medications(MedID) ON DELETE CASCADE,
+  FOREIGN KEY (VisitID) REFERENCES Visits(VisitID) ON DELETE CASCADE
 );
 
-INSERT INTO Prescriptions (MedID, VisitID, Dosage, DateRecieved)
+INSERT INTO Prescriptions (MedID, VisitID, Dosage, Quantity, DateReceived)
 VALUES
-(1, 1, '100 mg', NULL),
-(1, 1, '100 mg', NULL),
-(8, 2, '1000 ml' , NULL),
-(12, 3, '350 mg', NULL);
+(1, 3, '100 mg', NULL, NULL),
+(1, 3, '100 mg', NULL, NULL),
+(8, 2, '1000 ml' , NULL, NULL),
+(11, 3, '350 mg', NULL, NULL);
 
 
 

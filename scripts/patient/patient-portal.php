@@ -34,6 +34,7 @@ $num_patients = $pdo->query('SELECT COUNT(*) FROM PatientInformation')->fetchCol
                 <th>Genetics</th>
                 <th>Diabetes</th>
                 <th>Other Conditions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>

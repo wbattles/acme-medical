@@ -31,9 +31,11 @@ function template_header($title) {
             <nav class="navtop">
     	       <div>
     		        <h1>ACME Medical</h1>
-                        <a href="'.WEB_ROOT.APP_FOLDER_NAME.'/scripts/landingPage.php">Home</a>
+                        <a href="'.WEB_ROOT.APP_FOLDER_NAME.'/scripts/landing-page.php">Home</a>
+                        <a href="'.WEB_ROOT.APP_FOLDER_NAME.'/scripts/fev/fev-portal.php">FEV</a>
+                        <a href="'.WEB_ROOT.APP_FOLDER_NAME.'/scripts/prescription/prescription-portal.php">Perscription</a>
     		            <a href="'.WEB_ROOT.APP_FOLDER_NAME.'/scripts/patient/patient-portal.php">Patient</a>
-                        <a href="'.WEB_ROOT.APP_FOLDER_NAME.'/scripts/medication/medication-portal.php">Medications</a>
+                        <a href="'.WEB_ROOT.APP_FOLDER_NAME.'/scripts/medication/medication-portal.php">Medication</a>
     	       </div>
             </nav>
 ';
