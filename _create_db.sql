@@ -97,17 +97,17 @@ CREATE TABLE Prescriptions (
   MedID INT,
   VisitID INT,
   Dosage VARCHAR(255),
-  Quantity VARCHAR(255),
+  DateRecieved DATE,
   FOREIGN KEY (MedID) REFERENCES Medications(MedID),
   FOREIGN KEY (VisitID) REFERENCES Visits(VisitID)
 );
 
-INSERT INTO Prescriptions (MedID, VisitID, Dosage, Quantity)
+INSERT INTO Prescriptions (MedID, VisitID, Dosage, DateRecieved)
 VALUES
 (1, 1, '100 mg', NULL),
 (1, 1, '100 mg', NULL),
-(2, 2, '7%', NULL),
-(3, 3, '1000', 'Creon');
+(8, 2, '1000 ml' , NULL),
+(12, 3, '350 mg', NULL);
 
 
 
