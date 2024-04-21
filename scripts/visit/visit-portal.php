@@ -29,6 +29,7 @@ $num_visits = $pdo->query('SELECT COUNT(*) FROM Visits')->fetchColumn();
                 <th>Patient ID</th>
                 <th>Doctor ID</th>
                 <th>Visit Date</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>

@@ -42,6 +42,7 @@ if (!empty($_POST)) {
                 <?php echo $patient['PatientID'] . ' - ' . $patient['FirstName']; ?></option>
             <?php endforeach; ?>
         </select>
+        <br>
 
 
         <label for="DoctorID">Doctor</label>

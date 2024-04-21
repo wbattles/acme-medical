@@ -29,27 +29,14 @@ if (!empty($_POST)) {
         <label for="VisitID">PrescriptionID</label>
         <input type="text" name="VisitID" placeholder="" value="auto" id="VisitID">
 
-        <label for="VisitID">Visit</label>
-        <?php
-        $stmt = $pdo->query("SELECT VisitID, VisitDate FROM Visits");
-        $visits = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        ?>
-
-        <select name="VisitID" id="VisitID">
-            <?php foreach($visits as $visit) : ?>
-                <option value="<?php echo $visit['VisitID']; ?>">
-                <?php echo $visit['VisitID'] . ' - ' . $visit['VisitDate']; ?></option>
-            <?php endforeach; ?>
-        </select>
-
 
         <label for="MedID">Medication ID</label>
         <select name="MedID" id="MedID">
             <?php
-            $stmt = $pdo->query("SELECT MedID, MedName FROM Medications");
+            $stmt = $pdo->query("SELECT MedID, MedName, MedType FROM Medications");
             $medications = $stmt->fetchAll(PDO::FETCH_ASSOC);
             foreach ($medications as $medication) {
-                echo "<option value='{$medication['MedID']}'>{$medication['MedID']} - {$medication['MedName']}</option>";
+                echo "<option value='{$medication['MedID']}'>{$medication['MedID']} - {$medication['MedName']} {$medication['MedType']}</option>";
             }
             ?>
         </select>
@@ -62,6 +49,19 @@ if (!empty($_POST)) {
 
         <label for="DateReceived">Date Received</label>
         <input type="date" name="DateReceived" id="DateReceived" value="<?= date('Y-m-d') ?>">
+
+        <label for="VisitID">Visit</label>
+        <?php
+        $stmt = $pdo->query("SELECT VisitID, VisitDate FROM Visits");
+        $visits = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        ?>
+
+        <select name="VisitID" id="VisitID">
+            <?php foreach($visits as $visit) : ?>
+                <option value="<?php echo $visit['VisitID']; ?>">
+                <?php echo $visit['VisitID'] . ' - ' . $visit['VisitDate']; ?></option>
+            <?php endforeach; ?>
+        </select>
 
         <input type="submit" value="Create">
     </form>

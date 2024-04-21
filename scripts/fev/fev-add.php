@@ -24,6 +24,9 @@ if (!empty($_POST)) {
 <div class="content update">
     <h2>Create Test Record</h2>
     <form action="fev-add.php" method="post">
+        <label for="FEV">FEV</label>
+        <input type="text" name="FEV" placeholder="Enter FEV" id="FEV">
+
         <label for="VisitID">Visit</label>
         <select name="VisitID" id="VisitID">
             <?php
@@ -35,9 +38,6 @@ if (!empty($_POST)) {
             }
             ?>
         </select>
-
-        <label for="FEV">FEV</label>
-        <input type="text" name="FEV" placeholder="Enter FEV" id="FEV">
 
         <input type="submit" value="Create">
     </form>
