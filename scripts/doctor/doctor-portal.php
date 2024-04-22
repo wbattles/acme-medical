@@ -29,6 +29,7 @@ $num_doctors = $pdo->query('SELECT COUNT(*) FROM Doctors')->fetchColumn();
                 <th>Doctor ID</th>
                 <th>Doctor First Name</th>
                 <th>Doctor Last Name</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>

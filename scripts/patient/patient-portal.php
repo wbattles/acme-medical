@@ -34,6 +34,7 @@ $num_patients = $pdo->query('SELECT COUNT(*) FROM PatientInformation')->fetchCol
                 <th>Genetics</th>
                 <th>Diabetes</th>
                 <th>Other Conditions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -63,6 +64,7 @@ $num_patients = $pdo->query('SELECT COUNT(*) FROM PatientInformation')->fetchCol
             <a href="patient-portal.php?page=<?= $page + 1 ?>"><i class="fas fa-angle-double-right fa-sm"></i></a>
         <?php endif; ?>
     </div>
+    <a href="../visit/visit-portal.php" class="create-entry">Visits</a>
 </div>
 
 <?= template_footer() ?>

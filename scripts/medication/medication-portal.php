@@ -30,6 +30,7 @@ $num_medications = $pdo->query('SELECT COUNT(*) FROM Medications')->fetchColumn(
                 <th>Med Name</th>
                 <th>Med Type</th>
                 <th>Enzyme?</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>

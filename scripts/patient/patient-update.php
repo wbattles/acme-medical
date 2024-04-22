@@ -39,17 +39,19 @@ if (isset($_GET['PatientID'])) {
     <form action="patient-update.php?PatientID=<?= $patient['PatientID'] ?>" method="post">
         <label for="PatientID">Patient ID</label>
         <label for="FirstName">First Name</label>
-        <input type="text" name="PatientID" placeholder="1" value="<?= $patient['PatientID'] ?>" id="PatientID">
+        <input type="text" name="PatientID" placeholder="1" value="<?= $patient['PatientID'] ?>" id="PatientID" readonly>
         <input type="text" name="FirstName" placeholder="John" value="<?= $patient['FirstName'] ?>" id="FirstName">
+
         <label for="LastName">Last Name</label>
         <label for="Gender">Gender</label>
         <input type="text" name="LastName" placeholder="Doe" value="<?= $patient['LastName'] ?>" id="LastName">
         <input type="text" name="Gender" placeholder="Male" value="<?= $patient['Gender'] ?>" id="Gender">
+
         <label for="Birthdate">Birthdate</label>
         <label for="genetics">Genetics</label>
         <input type="date" name="Birthdate" value="<?= $patient['Birthdate'] ?>" id="Birthdate">
-        <input type="text" name="genetics" placeholder="Genetic Details" value="<?= $patient['genetics'] ?>"
-            id="genetics">
+        <input type="text" name="Genetics" placeholder="Genetic Details" value="<?= $patient['Genetics'] ?>"id="genetics">
+
         <label for="Diabetes">Diabetes</label>
         <label for="OtherConditions">Other Conditions</label>
         <input type="text" name="Diabetes" placeholder="Yes/No" value="<?= $patient['Diabetes'] ?>" id="Diabetes">
