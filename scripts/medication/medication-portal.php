@@ -16,45 +16,45 @@ $stmt->execute();
 $medications = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $num_medications = $pdo->query('SELECT COUNT(*) FROM Medications')->fetchColumn();
+?>
 
-template_header('Read');
+<?=template_header('Medication Read')?>
 
-echo "
-<div class='content read'>
+<div class="content read">
 	<h2>Medication Info</h2>
-	<a href='medication-add.php' class='create-entry'>Add Medication</a>
+	<a href="medication-add.php" class="create-entry">Add Medication</a>
     <table>
-    <thead>
-        <tr>
-            <th>Med ID</th>
-            <th>Med Name</th>
-            <th>Med Type</th>
-            <th>Enzyme?</th>
-        </tr>
         <thead>
-        <tbody>";
-    
-foreach ($medications as $medication) {
-    echo "<tr>";
-    echo "<td>" . $medication["MedID"] . "</td>";
-    echo "<td>" . $medication["MedName"] . "</td>";
-    echo "<td>" . $medication["MedType"] . "</td>";
-    echo "<td>" . $medication["Enzyme?"] . "</td>";
-};
-
-
-echo "</tbody>
+            <tr>
+                <th>Med ID</th>
+                <th>Med Name</th>
+                <th>Med Type</th>
+                <th>Enzyme?</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($medications as $medication) : ?>
+            <tr>
+                <td><?=$medication['MedID']?></td>
+                <td><?=$medication['MedName']?></td>
+                <td><?=$medication['MedType']?></td>
+                <td><?=$medication['Enzyme']?></td>
+                <td class="actions">
+                    <a href="medication-update.php?MedID=<?= $medication['MedID'] ?>" class="edit"><i class="fas fa-pen fa-xs"></i></a>
+                    <a href="medication-delete.php?MedID=<?= $medication['MedID'] ?>" class="trash"><i class="fas fa-trash fa-xs"></i></a>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
     </table>
-<div class='pagination'>";
-if ($page > 1):
-    echo "<a href='medication-portal.php?page=<?=$page-1?>'><i class='fas fa-angle-double-left fa-sm'></i></a>";
-endif;
-if ($page*$records_per_page < $num_medications):
-    echo "<a href='medication-portal.php?page=<?=$page+1?>'><i class='fas fa-angle-double-right fa-sm'></i></a>";
-endif;
-
-echo "
+	<div class="pagination">
+		<?php if ($page > 1): ?>
+		<a href="medication-portal.php?page=<?=$page-1?>"><i class="fas fa-angle-double-left fa-sm"></i></a>
+		<?php endif; ?>
+		<?php if ($page*$records_per_page < $num_medications): ?>
+		<a href="medication-portal.php?page=<?=$page+1?>"><i class="fas fa-angle-double-right fa-sm"></i></a>
+		<?php endif; ?>
+	</div>
 </div>
-</div>";
 
-template_footer();
+<?=template_footer()?>

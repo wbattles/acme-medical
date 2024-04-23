@@ -3,7 +3,6 @@
 @include_once (APP_ROOT.APP_FOLDER_NAME . '/scripts/functions.php');
 $pdo = pdo_connect_mysql();
 $msg = '';
-exit();
 
 if (!empty($_POST)) {
 
@@ -32,11 +31,11 @@ echo '<div class="content update">
     <label for="MedType">MedType</label>
     <input type="text" name="MedType" id="MedType">
     <label for="Enzyme?">Enzyme?</label>
-    <input type="text" name="Enzyme?" placeholder="Yes or No" id="Enzyme?">
+    <input type="text" name="Enzyme?" placeholder="Y or N" id="Enzyme?">
     <input type="submit" value="Create">
 </form>';
 if (!empty($msg)):
-    echo '<p>' . $msg .'/p>';
+    echo $msg;
 endif;
 echo '</div>';
 
