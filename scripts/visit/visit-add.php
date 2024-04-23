@@ -22,7 +22,7 @@ if (!empty($_POST)) {
 <?=template_header('Create')?>
 
 <div class="content update">
-	<h2>Create Conversation</h2>
+	<h2>Create Visit</h2>
     <form action="visit-add.php" method="post">
         <label for="VisitID">VisitID</label>
         <label for="VisitDate">VisitDate</label>
@@ -32,14 +32,14 @@ if (!empty($_POST)) {
         
         <label for="PatientID">Patient</label>
         <?php
-        $stmt = $pdo->query("SELECT PatientID, FirstName FROM PatientInformation");
+        $stmt = $pdo->query("SELECT PatientID, FirstName, LastName FROM PatientInformation");
         $patients = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ?>
 
         <select name="PatientID" id="PatientID">
             <?php foreach($patients as $patient) : ?>
                 <option value="<?php echo $patient['PatientID']; ?>">
-                <?php echo $patient['PatientID'] . ' - ' . $patient['FirstName']; ?></option>
+                <?php echo $patient['PatientID'] . ' - ' . $patient['FirstName'] . ' ' . $patient['LastName']; ?></option>
             <?php endforeach; ?>
         </select>
         <br>
@@ -47,14 +47,14 @@ if (!empty($_POST)) {
 
         <label for="DoctorID">Doctor</label>
         <?php
-        $stmt = $pdo->query("SELECT DoctorID, DFirstName FROM Doctors");
+        $stmt = $pdo->query("SELECT DoctorID, DFirstName, DLastName FROM Doctors");
         $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ?>
         
         <select name="DoctorID" id="DoctorID">
             <?php foreach ($doctors as $doctor): ?>
                 <option value="<?php echo $doctor['DoctorID']; ?>">
-                <?php echo $doctor['DoctorID'] . ' - ' . $doctor['DFirstName']; ?></option>
+                <?php echo $doctor['DoctorID'] . ' - ' . $doctor['DFirstName'] . ' ' . $doctor['DLastName']; ?></option>
             <?php endforeach; ?>
         </select>
 

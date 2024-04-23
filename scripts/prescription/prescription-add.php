@@ -52,14 +52,25 @@ if (!empty($_POST)) {
 
         <label for="VisitID">Visit</label>
         <?php
-        $stmt = $pdo->query("SELECT VisitID, VisitDate FROM Visits");
+        $stmt = $pdo->query("
+            SELECT 
+                Visits.VisitID, 
+                Visits.VisitDate, 
+                PatientInformation.FirstName, 
+                PatientInformation.LastName
+            FROM 
+                Visits
+            JOIN 
+                PatientInformation ON Visits.PatientID = PatientInformation.PatientID
+            ORDER BY 
+                Visits.VisitDate DESC
+        ");
         $visits = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ?>
 
         <select name="VisitID" id="VisitID">
             <?php foreach($visits as $visit) : ?>
-                <option value="<?php echo $visit['VisitID']; ?>">
-                <?php echo $visit['VisitID'] . ' - ' . $visit['VisitDate']; ?></option>
+                <?php echo "<option value='{$visit['VisitID']}'>{$visit['FirstName']} {$visit['LastName']} - {$visit['VisitDate']}</option>"; ?>
             <?php endforeach; ?>
         </select>
 

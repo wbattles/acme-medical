@@ -62,13 +62,48 @@ if (isset($_GET['PrescriptionID'])) {
         ?>
 
         <select name="VisitID" id="VisitID">
-            <?php foreach($visits as $visit) : ?>
-                <option value="<?php echo $visit['VisitID']; ?>">
-                    <?php echo $visit['VisitID'] . ' - ' . $visit['VisitDate']?>
-                </option>
-            <?php endforeach; ?>
-        </select>
+            <?php
+            $stmt = $pdo->query("
+                SELECT 
+                    Visits.VisitID, 
+                    Visits.VisitDate, 
+                    PatientInformation.FirstName, 
+                    PatientInformation.LastName
+                FROM 
+                    Visits
+                JOIN 
+                    PatientInformation ON Visits.PatientID = PatientInformation.PatientID
+                ORDER BY 
+                    Visits.VisitDate DESC
+                ");
+            $visits = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+            $stmt = $pdo->prepare("
+                SELECT 
+                    Visits.VisitID, 
+                    Visits.VisitDate, 
+                    PatientInformation.FirstName, 
+                    PatientInformation.LastName
+                FROM 
+                    Visits
+                JOIN 
+                    PatientInformation ON Visits.PatientID = PatientInformation.PatientID
+                WHERE 
+                    Visits.VisitID = :visitID
+                ORDER BY 
+                    Visits.VisitDate DESC
+                ");
+            $stmt->bindParam(':visitID', $prescription['VisitID'], PDO::PARAM_INT);
+            $stmt->execute();
+            $test = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            echo "<option value='{$test['VisitID']}'> {$test['FirstName']} {$test['LastName']} - {$test['VisitDate']} </option>";
+
+            foreach ($visits as $visit) {
+                echo "<option value='{$visit['VisitID']}'>{$visit['FirstName']} {$visit['LastName']} - {$visit['VisitDate']}</option>";
+            }
+            ?>
+        </select>
         <input type="submit" value="Update">
     </form>
     <?php if ($msg): ?>

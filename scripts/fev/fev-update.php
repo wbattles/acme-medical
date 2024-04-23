@@ -32,23 +32,53 @@ if (isset($_GET['TestRecordID'])) {
 <div class="content update">
     <h2>Update Test Record #<?= $test['TestRecordID'] ?></h2>
     <form action="fev-update.php?TestRecordID=<?= $test['TestRecordID'] ?>" method="post">
-        <label for="VisitID">Visit</label>
-            <?php
-            // Fetch all visits from the database. You might want to join this with patient or doctor information for more descriptive labels.
-            $stmt = $pdo->query("SELECT VisitID, VisitDate FROM Visits");
-            $visits = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            ?>
+            <label for="FEV">FEV</label>
+            <input type="text" name="FEV" id="FEV" value="<?= $test['FEV'] ?>">
 
+            <label for="VisitID">Visit</label>
             <select name="VisitID" id="VisitID">
-                <?php foreach($visits as $visit) : ?>
-                    <option value="<?php echo $visit['VisitID']; ?>">
-                        <?php echo $visit['VisitID'] . ' - ' . $visit['VisitDate']?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+                <?php
+                $stmt = $pdo->query("
+                SELECT 
+                    Visits.VisitID, 
+                    Visits.VisitDate, 
+                    PatientInformation.FirstName, 
+                    PatientInformation.LastName
+                FROM 
+                    Visits
+                JOIN 
+                    PatientInformation ON Visits.PatientID = PatientInformation.PatientID
+                ORDER BY 
+                    Visits.VisitDate DESC
+                ");
+                $visits = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        <label for="FEV">FEV (Forced Expiratory Volume)</label>
-        <input type="text" name="FEV" id="FEV" value="<?= $test['FEV'] ?>">
+                $stmt = $pdo->prepare("
+                SELECT 
+                    Visits.VisitID, 
+                    Visits.VisitDate, 
+                    PatientInformation.FirstName, 
+                    PatientInformation.LastName
+                FROM 
+                    Visits
+                JOIN 
+                    PatientInformation ON Visits.PatientID = PatientInformation.PatientID
+                WHERE 
+                    Visits.VisitID = :visitID
+                ORDER BY 
+                    Visits.VisitDate DESC
+                ");
+                $stmt->bindParam(':visitID', $test['VisitID'], PDO::PARAM_INT);
+                $stmt->execute();
+                $test = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                echo "<option value='{$test['VisitID']}'> {$test['FirstName']} {$test['LastName']} - {$test['VisitDate']} </option>";
+
+                foreach($visits as $visit) {
+                    echo "<option value='{$visit['VisitID']}'>{$visit['FirstName']} {$visit['LastName']} - {$visit['VisitDate']}</option>";
+                }
+                ?>
+            </select>
 
         <input type="submit" value="Update">
     </form>

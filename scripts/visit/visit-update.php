@@ -51,10 +51,6 @@ if (isset($_GET['VisitID'])) {
             <?php endforeach; ?>
         </select>
 
-
-
-
-
         <label for="DoctorID">Doctor</label>
         <?php
         $stmt = $pdo->query("SELECT DoctorID, DFirstName, DLastName FROM Doctors");

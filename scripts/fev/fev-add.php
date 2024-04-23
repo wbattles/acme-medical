@@ -31,10 +31,22 @@ if (!empty($_POST)) {
         <select name="VisitID" id="VisitID">
             <?php
             // Fetch all visits to allow selection of which visit this test is associated with
-            $stmt = $pdo->query("SELECT VisitID, VisitDate FROM Visits");
+            $stmt = $pdo->query("
+            SELECT 
+                Visits.VisitID, 
+                Visits.VisitDate, 
+                PatientInformation.FirstName, 
+                PatientInformation.LastName
+            FROM 
+                Visits
+            JOIN 
+                PatientInformation ON Visits.PatientID = PatientInformation.PatientID
+            ORDER BY 
+                Visits.VisitDate DESC
+            ");
             $visits = $stmt->fetchAll(PDO::FETCH_ASSOC);
             foreach ($visits as $visit) {
-                echo "<option value='{$visit['VisitID']}'>{$visit['VisitID']} - {$visit['VisitDate']}</option>";
+                echo "<option value='{$visit['VisitID']}'>{$visit['FirstName']} {$visit['LastName']} - {$visit['VisitDate']}</option>";
             }
             ?>
         </select>
