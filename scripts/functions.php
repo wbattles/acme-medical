@@ -34,10 +34,8 @@ function template_header($title) {
                         <a href="'.WEB_ROOT.APP_FOLDER_NAME.'/scripts/landing-page.php">Home</a>
                         <a href="'.WEB_ROOT.APP_FOLDER_NAME.'/scripts/fev/fev-portal.php">FEV</a>
                         <a href="'.WEB_ROOT.APP_FOLDER_NAME.'/scripts/prescription/prescription-portal.php">Perscription</a>
-                        <a href="'.WEB_ROOT.APP_FOLDER_NAME.'/scripts/landing-page.php">Home</a>
     		            <a href="'.WEB_ROOT.APP_FOLDER_NAME.'/scripts/patient/patient-portal.php">Patient</a>
                         <a href="'.WEB_ROOT.APP_FOLDER_NAME.'/scripts/medication/medication-portal.php">Medication</a>
-                        <a href="'.WEB_ROOT.APP_FOLDER_NAME.'/scripts/medication/medication-portal.php">Medications</a>
                         <a href="'.WEB_ROOT.APP_FOLDER_NAME.'/scripts/doctor/doctor-portal.php">Doctors</a>
 
     	       </div>

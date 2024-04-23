@@ -17,13 +17,16 @@ SELECT
     d.DLastName AS DoctorLastName, 
     t.MaxFEV AS HighestFEV,
     GROUP_CONCAT(
-        CONCAT_WS(
-            '  ',
-            'MedName:', COALESCE(m.MedName, 'No Medication'),
-            'Dosage:', COALESCE(p.Dosage, 'N/A'),
-            'Quantity:', COALESCE(p.Quantity, 'N/A'),
-            'DateReceived:', COALESCE(p.DateReceived, 'N/A')
-        ) SEPARATOR ', '
+        DISTINCT CASE
+            WHEN p.MedID IS NOT NULL THEN
+                CONCAT_WS(
+                    '  ',
+                    'MedName:', m.MedName,
+                    'Dosage:', p.Dosage,
+                    'Quantity:', p.Quantity,
+                    'DateReceived:', p.DateReceived
+                )
+        END ORDER BY p.DateReceived DESC SEPARATOR ', '
     ) AS Medications
 FROM 
     PatientInformation pi
@@ -42,7 +45,7 @@ LEFT JOIN
 LEFT JOIN 
     Medications m ON p.MedID = m.MedID
 GROUP BY
-    pi.PatientID, v.VisitID
+    pi.PatientID
 ORDER BY 
     pi.LastName, pi.FirstName, v.VisitDate;
 

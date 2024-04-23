@@ -30,21 +30,22 @@ if (!empty($_POST)) {
         <input type="datetime-local" name="VisitDate" value="<?= date('Y-m-d\TH:i') ?>" id="VisitDate">
         
         
+        <div>
         <label for="PatientID">Patient</label>
         <?php
         $stmt = $pdo->query("SELECT PatientID, FirstName, LastName FROM PatientInformation");
         $patients = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ?>
-
         <select name="PatientID" id="PatientID">
             <?php foreach($patients as $patient) : ?>
                 <option value="<?php echo $patient['PatientID']; ?>">
                 <?php echo $patient['PatientID'] . ' - ' . $patient['FirstName'] . ' ' . $patient['LastName']; ?></option>
             <?php endforeach; ?>
         </select>
-        <br>
+        </div>
 
 
+        <div>
         <label for="DoctorID">Doctor</label>
         <?php
         $stmt = $pdo->query("SELECT DoctorID, DFirstName, DLastName FROM Doctors");
@@ -57,6 +58,7 @@ if (!empty($_POST)) {
                 <?php echo $doctor['DoctorID'] . ' - ' . $doctor['DFirstName'] . ' ' . $doctor['DLastName']; ?></option>
             <?php endforeach; ?>
         </select>
+        </div><br>
 
         <input type="submit" value="Create">
     </form>
