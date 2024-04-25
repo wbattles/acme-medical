@@ -1,3 +1,5 @@
+-- User kermit@localhost
+-- Password sesame
 
 DROP DATABASE IF EXISTS AcmeMedicalDatabase;
 CREATE DATABASE AcmeMedicalDatabase;

@@ -32,11 +32,9 @@ if (isset($_GET['MedID'])) {
 <div class="content update">
 	<h2>Update Medication #<?=$medication['MedID']?></h2>
     <form action="medication-update.php?MedID=<?=$medication['MedID']?>" method="post">
-        <label for="MedID">ID</label>
-        <input type="text" name="MedID" placeholder="auto" value="<?=$medication['MedID']?>" id="MedID">
         
         <label for="MedName">Med Name</label>
-        <input type="text" name="MedName" value="<?=$medication['MedName']?>" id="MedName">
+        <input type="text" name="MedName" value="<?=$medication['MedName']?>" id="MedName" readonly>
         
         <label for="MedType">MedType</label>
         <input type="text" name="MedType" value="<?=$medication['MedType']?>" id="MedType">

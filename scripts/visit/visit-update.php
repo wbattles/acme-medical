@@ -7,13 +7,12 @@ $msg = '';
 if (isset($_GET['VisitID'])) {
     if (!empty($_POST)) {
 
-        $VisitID = isset($_POST['VisitID']) ? $_POST['VisitID'] : NULL;
         $PatientID = isset($_POST['PatientID']) ? $_POST['PatientID'] : '';
         $DoctorID = isset($_POST['DoctorID']) ? $_POST['DoctorID'] : '';
         $VisitDate = isset($_POST['VisitDate']) ? $_POST['VisitDate'] : date('Y-m-d H:i:s');
 
-        $stmt = $pdo->prepare('UPDATE Visits SET VisitID = ?, PatientID = ?, DoctorID = ?, VisitDate = ? WHERE VisitID = ?');
-        $stmt->execute([$VisitID, $PatientID, $DoctorID, $VisitDate, $_GET['VisitID']]);
+        $stmt = $pdo->prepare('UPDATE Visits SET  PatientID = ?, DoctorID = ?, VisitDate = ? WHERE VisitID = ?');
+        $stmt->execute([$PatientID, $DoctorID, $VisitDate, $_GET['VisitID']]);
         $msg = 'Updated Successfully!';
     }
 
@@ -32,9 +31,14 @@ if (isset($_GET['VisitID'])) {
 <div class="content update">
     <h2>Update Visit #<?= $visit['VisitID'] ?></h2>
     <form action="visit-update.php?VisitID=<?= $visit['VisitID'] ?>" method="post">
-        <label for="VisitID">Visit ID</label>
-        <input type="text" name="VisitID" placeholder="Visit ID" value="<?= $visit['VisitID'] ?>" id="VisitID">
+    
+    
+        <label for="VisitDate">Visit Date</label>
+        <input type="date" name="VisitDate"
+            value="<?= isset($visit['VisitDate']) ? $visit['VisitDate'] : date('Y-m-d') ?>"
+            id="VisitDate">
 
+        <div>
         <label for="PatientID">Patient</label>
         <?php
         $stmt = $pdo->query("SELECT PatientID, FirstName, LastName FROM PatientInformation");
@@ -50,7 +54,9 @@ if (isset($_GET['VisitID'])) {
                 </option>
             <?php endforeach; ?>
         </select>
+        </div>
 
+        <div>
         <label for="DoctorID">Doctor</label>
         <?php
         $stmt = $pdo->query("SELECT DoctorID, DFirstName, DLastName FROM Doctors");
@@ -63,11 +69,8 @@ if (isset($_GET['VisitID'])) {
                 <option value="<?php echo $doctor['DoctorID']; ?>"><?php echo $doctor['DoctorID'] . ' - ' . $doctor['DFirstName'] . ' ' . $doctor['DLastName']?></option>
             <?php endforeach; ?>
         </select>
+        </div>
 
-
-        <label for="VisitDate">Visit Date</label>
-        <input type="date" name="VisitDate"
-            value="<?= isset($visit['VisitDate']) ? $visit['VisitDate'] : date('Y-m-d') ?>" id="VisitDate">
         <input type="submit" value="Update">
     </form>
     <?php if ($msg): ?>

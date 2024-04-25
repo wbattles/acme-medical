@@ -31,8 +31,6 @@ if (isset($_GET['DoctorID'])) {
 <div class="content update">
     <h2>Update Doctor #<?= $doctor['DoctorID'] ?></h2>
     <form action="doctor-update.php?DoctorID=<?= $doctor['DoctorID'] ?>" method="post">
-        <label for="DoctorID">Doctor ID</label>
-        <input type="text" name="DoctorID" placeholder="1" value="<?= $doctor['DoctorID'] ?>" id="DoctorID">
 
         <label for="DFirstName">Doctor First Name</label>
         <input type="text" name="DFirstName" placeholder="John" value="<?= $doctor['DFirstName'] ?>" id="DFirstName">
